@@ -1,6 +1,6 @@
 {
   "name": "leg5",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Zero-dependency concurrent function execution for Node.js using worker threads.",
   "keywords": [
     "typescript",
@@ -23,7 +23,6 @@
   "scripts": {
     "build": "tsc && node ./fixPaths.js",
     "clean": "rm -rf dist",
-    "dev": "tsc --watch",
     "test": "jest --passWithNoTests"
   },
   "devDependencies": {
