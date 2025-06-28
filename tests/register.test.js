@@ -2,8 +2,12 @@ const path = require("path");
 const Leg5 = require("../dist/leg5.js").default;
 
 describe("Basic task registration and run", () => {
-    it("Register task from source code", async () => {
-        await Leg5.register_task("source_task", `code:
+    it("Register and run task from source code", async () => {
+        const instance = new Leg5();
+
+        instance.setup();
+
+        await instance.register_task("source_task", `code:
             let sum = 0;
 
             for (let i=from; i<=to; i++) {
@@ -13,31 +17,26 @@ describe("Basic task registration and run", () => {
             return sum;
         `, ['from', 'to']);
 
-        expect(Leg5.has_task("source_task")).toBeTruthy();
-    });
+        expect(instance.has_task("source_task")).toBeTruthy();
 
-    it("Run task and get result", async () => {
-        Leg5.setup();
-
-        const task = Leg5.run_task('source_task', { from: -100, to: 100 });
+        const task = instance.run_task('source_task', { from: -100, to: 100 });
 
         expect(await task.promise).toBe(0);
 
-        Leg5.shutdown();
+        instance.shutdown();
     });
 
-    it("Register task from source file", async () => {
+    it("Register and run task from source file", async () => {
+        const instance = new Leg5();
+        instance.setup();
+
         const source = path.resolve(__dirname, "testWorkerTask.js");
 
-        await Leg5.register_task("file_task", source, ["numCount"]);
+        await instance.register_task("file_task", source, ["numCount"]);
 
-        expect(Leg5.has_task("file_task")).toBeTruthy();
-    });
+        expect(instance.has_task("file_task")).toBeTruthy();
 
-    it("Run task from source file", async () => {
-        Leg5.setup();
-
-        const task = Leg5.run_task("file_task", {numCount: 1024});
+        const task = instance.run_task("file_task", {numCount: 1024});
 
         const taskResult = await task.promise;
 
@@ -45,6 +44,6 @@ describe("Basic task registration and run", () => {
         expect(taskResult.result instanceof ArrayBuffer).toBeTruthy();
         expect(taskResult.result.byteLength).toBe(Int32Array.BYTES_PER_ELEMENT * 1024);
 
-        Leg5.shutdown();
+        instance.shutdown();
     });
 })

@@ -95,7 +95,7 @@ export default class Thread {
 				this.onRelease(this.id);
 				break;
 			case "aborted":
-				this.currentTask?.fail(new Error("Requested abort"));
+				this.currentTask?.fail(new Error("Aborted"));
 				this.currentTask = null;
 				this.onRelease(this.id);
 				break;

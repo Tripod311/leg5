@@ -27,7 +27,7 @@ class Executor {
 				this.execute(message.name, message.script as string, message.argsList as string[], message.args as Record<string,any>, message.timeout as number);
 				break;
 			case "abort":
-				this.abortContext.controller.abort(new Error("Requested abort"));
+				this.abortContext.controller.abort(new Error("Aborted"));
 				break;
 		}
 	}
@@ -55,14 +55,14 @@ class Executor {
 
 			if (timeout > 0) {
 				this.timeout = setTimeout(() => {
-					this.abortContext.controller.abort(new Error("Task timed out"));
+					this.abortContext.controller.abort(new Error("Timeout"));
 				}, timeout);
 			}
 
 			const result = await fn(this.abortContext, ...Object.values(args));
 
 			if (this.abortContext.controller.signal.aborted) {
-				throw this.abortContext.controller.signal.reason ?? new Error("Task aborted");
+				throw this.abortContext.controller.signal.reason ?? new Error("Aborted");
 			}
 
 			if (this.terminated) return;

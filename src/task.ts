@@ -55,7 +55,7 @@ export default class Task {
 		if (!this._canceled) {
 			this._canceled = true;
 			if (this._cancelFunction) this._cancelFunction();
-			this._promise.reject(new Error("Task canceled"));
+			this._promise.reject(new Error("Canceled"));
 		}
 	}
 
