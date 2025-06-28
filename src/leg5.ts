@@ -59,6 +59,10 @@ export default class Leg5 {
 
 	unregister_task (name: string) {
 		this.task_map.delete(name);
+
+		for (let i=0; i<this.threads.length; i++) {
+			this.threads[i].forget_task(name);
+		}
 	}
 
 	has_task (name: string): boolean {

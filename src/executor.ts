@@ -24,7 +24,7 @@ class Executor {
 				this.terminated = true;
 				break;
 			case "execute":
-				this.execute(message.name, message.script as string, message.argsList as string[], message.args as Record<string,any>, message.timeout as number);
+				this.execute(message.name, message.args as Record<string,any>, message.timeout as number, message.script as string, message.argsList as string[]);
 				break;
 			case "abort":
 				this.abortContext.controller.abort(new Error("Aborted"));
@@ -32,9 +32,9 @@ class Executor {
 		}
 	}
 
-	compile (name: string, script: string, argsList: string[]) {
-		if (!this.task_cache.has(name)) {
-			this.task_cache.set(name, eval(`(async function (AbortContext, ${argsList.join(',')}) {
+	compile (name: string, script?: string, argsList?: string[]) {
+		if (!this.task_cache.has(name) || script !== undefined) {
+			this.task_cache.set(name, eval(`(async function (AbortContext, ${(argsList as string[]).join(',')}) {
 				${script}
 			})`));
 		}
@@ -49,7 +49,7 @@ class Executor {
 		return { message: String(e) };
 	}
 
-	async execute (name: string, script: string, argsList: string[], args: Record<string, any>, timeout: number) {
+	async execute (name: string, args: Record<string, any>, timeout: number, script?: string, argsList?: string[]) {
 		try {
 			const fn = this.compile(name, script, argsList) as (...args: any[]) => Promise<any>;
 

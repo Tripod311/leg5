@@ -34,9 +34,6 @@ export default class Thread {
 	create_worker () {
 		this.known_tasks.clear();
 
-		// const __filename = fileURLToPath(import.meta.url);
-		// const __dirname = path.dirname(__filename);
-
 		const workerPath = path.join(__dirname, 'executor.js');
 
 		this.worker = new Worker(workerPath);
@@ -116,6 +113,10 @@ export default class Thread {
 		this.currentTask?.fail(new Error("Worker terminated"));
 
 		this.create_worker();
+	}
+
+	forget_task (name: string) {
+		this.known_tasks.delete(name);
 	}
 
 	get isBusy () {
