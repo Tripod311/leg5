@@ -32,7 +32,7 @@ class Executor {
 		}
 	}
 
-	compile (name: string, script?: string, argsList?: string[]) {
+	compile (name: string, script: string, argsList: string[]) {
 		if (!this.task_cache.has(name) || script !== undefined) {
 			this.task_cache.set(name, eval(`(async function (AbortContext, ${(argsList as string[]).join(',')}) {
 				${script}
@@ -49,7 +49,7 @@ class Executor {
 		return { message: String(e) };
 	}
 
-	async execute (name: string, args: Record<string, any>, timeout: number, script?: string, argsList?: string[]) {
+	async execute (name: string, args: Record<string, any>, timeout: number, script: string, argsList: string[]) {
 		try {
 			const fn = this.compile(name, script, argsList) as (...args: any[]) => Promise<any>;
 
@@ -59,7 +59,10 @@ class Executor {
 				}, timeout);
 			}
 
-			const result = await fn(this.abortContext, ...Object.values(args));
+			const orderedArgs = argsList.map(argName => {
+				return args[argName];
+			});
+			const result = await fn(this.abortContext, ...orderedArgs);
 
 			if (this.abortContext.controller.signal.aborted) {
 				throw this.abortContext.controller.signal.reason ?? new Error("Aborted");

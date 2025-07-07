@@ -1,5 +1,5 @@
 {
-  "name": "leg5",
+  "name": "@tripod311/leg5",
   "version": "0.0.1",
   "description": "Zero-dependency concurrent function execution for Node.js using worker threads.",
   "keywords": [
@@ -18,7 +18,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "build": "tsc && node ./fixPaths.js",
@@ -29,5 +30,13 @@
     "@types/node": "^24.0.4",
     "jest": "^30.0.3",
     "typescript": "^5.8.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tripod311/leg5.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Tripod311/leg5/issues"
+  },
+  "homepage": "https://github.com/Tripod311/leg5#readme"
 }
