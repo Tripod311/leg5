@@ -1,6 +1,6 @@
 {
   "name": "@tripod311/leg5",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Zero-dependency concurrent function execution for Node.js using worker threads.",
   "keywords": [
     "typescript",
